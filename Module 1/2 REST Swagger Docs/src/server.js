@@ -1,6 +1,7 @@
 // System
 const fs = require('fs');
-const isdev = true
+const isdev = false
+const perPageCount = 25
 
 //Express
 const express = require("express");
@@ -22,6 +23,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: t
 
 // Main App
 
+// Helper Functions
 function saveAirportsData() {
   fs.writeFile(airportsFileName, JSON.stringify(airports, null, "\t"), function writeJSON(err) {
     if (err) return console.log(err);
@@ -31,12 +33,18 @@ function saveAirportsData() {
 
 // GET - All Airports
 app.get("/airports", (req, res) => {
-  res.send(airports);
+  if (req.query.all != 'true') {
+    const pageSize = !isNaN(req.query.pagesize) ? parseInt(req.query.pagesize) : perPageCount
+    const startIndex = (!isNaN(req.query.page) ? parseInt(req.query.page) : 0) * pageSize
+    res.send(airports.slice(startIndex, startIndex + pageSize));
+  } else {
+    res.send(airports);
+  }
 });
 
 // POST - Add New Airport
 app.post("/airports", (req, res) => {
-  airports.push(req.body)
+  airports.unshift(req.body)
   saveAirportsData()
   res.send()
 });
@@ -67,7 +75,7 @@ app.put("/airport/:icao", (req, res) => {
 // PATCH - Updates an Aiport's Data
 app.patch("/airport/:icao", (req, res) => {
   const airportIndex = airports.findIndex(airport => airport.icao === req.params.icao)
-  
+
   if (airportIndex > -1) {
     console.log(`Updating ${airports[airportIndex].name}`)
     airports[airportIndex] = Object.assign(airports[airportIndex], req.body)
@@ -83,7 +91,7 @@ app.patch("/airport/:icao", (req, res) => {
 // DELETE - Delete an Airport
 app.delete("/airport/:icao", (req, res) => {
   const airportIndex = airports.findIndex(airport => airport.icao === req.params.icao)
-  
+
   if (airportIndex > -1) {
     airports.splice(airportIndex, 1);
     saveAirportsData()
