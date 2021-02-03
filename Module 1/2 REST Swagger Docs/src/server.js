@@ -1,7 +1,9 @@
-// System
-const fs = require('fs');
+// Vars
 const isdev = false
 const perPageCount = 25
+
+// System
+const saveAirportsData = require('./utils/saveFile.js')
 
 //Express
 const express = require("express");
@@ -9,12 +11,12 @@ const app = express();
 const bodyParser = require('body-parser');
 
 // our airports json
-const airportsFileName = isdev ? "../assets/airportstest.json" : "../assets/airports.json"
+const airportsFileName = isdev ? "./assets/airportstest.json" : "./assets/airports.json"
 const airports = isdev ? require(airportsFileName) : require(airportsFileName);
 
 // swagger components
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("../assets/docs/APIdocs.json")
+const swaggerDocument = require("./assets/docs/APIdocs.json")
 
 // Setup Express Middleware
 app.use(bodyParser.json());
@@ -22,14 +24,6 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: t
 
 
 // Main App
-
-// Helper Functions
-function saveAirportsData() {
-  fs.writeFile(airportsFileName, JSON.stringify(airports, null, "\t"), function writeJSON(err) {
-    if (err) return console.log(err);
-    console.log('writing to ' + airportsFileName);
-  });
-}
 
 // GET - All Airports
 app.get("/airports", (req, res) => {
