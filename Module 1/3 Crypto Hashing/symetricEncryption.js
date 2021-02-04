@@ -33,7 +33,7 @@ async function _decrypt(encrypted_msg, encrypted_key) {
     const errorText = 'Invalid Combination'
     if (!encrypted_msg) return errorText
     try {
-        const settings = (encrypted_key.includes(',')) ? { name: _settings.name, iv: new Uint8Array(encrypted_key.split(',').map(x => parseInt(x))) } : false
+        const settings = (encrypted_key.includes(',')) ? { name: _settings.name, iv: new Uint8Array(encrypted_key.split(',').map(x => parseInt(x.trim()))) } : false
 
         const [encryptedBufferToString, shareableKey] = encrypted_key && !settings ? [atob(encrypted_msg), atob(encrypted_key)] : atob(encrypted_msg).split('|')
 

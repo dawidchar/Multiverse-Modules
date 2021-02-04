@@ -8,12 +8,12 @@
 
 <body>
     <div class="mx-auto" style="width: 80vw; height: 100vh">
-        <div class="d-flex flex-column justify-content-center" style="height: 100%;">
-            <div class="mx-auto mb-3 card p-4 my-4" style="width: 32em;">
+        <div class="d-flex flex-row justify-content-center align-items-center" style="height: 100%;">
+            <div class="mx-auto mb-3 card p-4 my-4" style="width: 32em;  min-height: 28em;">
                 <h4 class="text-center mb-3 text-danger ">Encrypt</h4>
                 <label class="form-label">Message To Encrypt</label>
                 <input type="text" class="form-control" id="EncryptMsg" placeholder="Message">
-                <div style="max-width: 28em; font-size: 12px;">
+                <div style="max-width: 32em; font-size: 12px;">
                     <div class="d-flex flex-column mt-4" style="max-width: 100%;">
                         <h6 style="padding-top: 1px;">Encrypted Bundle:</h6>
                         <p class="ps-4 text-wrap" style="max-width: 100%;" id="EncryptedBundle"></p>
@@ -26,9 +26,13 @@
                         <h6 style="padding-top: 1px;">Encrypted Key:</h6>
                         <p class="ps-4 text-wrap" style="max-width: 100%;" id="EncryptedKey"></p>
                     </div>
+                    <div class="d-flex flex-column mt-4" style="max-width: 100%">
+                        <h6 style="padding-top: 1px;">IV:</h6>
+                        <p class="ps-4 text-wrap" style="max-width: 100%;" id="EncryptedIV"></p>
+                    </div>
                 </div>
             </div>
-            <div class="mx-auto mb-3 card p-4 my-4" style="width: 32em;">
+            <div class="mx-auto mb-3 card p-4 my-4" style="width: 32em; min-height: 28em;">
                 <h4 class="text-center mb-3 text-primary">Decrypt</h4>
                 <label class="form-label">Message To Decrypt</label>
                 <input type="text" class="form-control" id="DecryptMsg" placeholder="Encrypted Text">
@@ -52,6 +56,8 @@
 
     document.getElementById('DecryptMsg').addEventListener("input", decrypt)
     document.getElementById('DecryptKey').addEventListener("input", decrypt)
+
+    document.getElementById('EncryptedIV').innerText = _settings.iv.join(", ")
 
     function encrypt(event) {
         _encrypt(event.srcElement.value).then(([encryptedBundle, encryptedText, encryptedKey]) => {
