@@ -1,5 +1,3 @@
-const isdev = false
-
 // Express
 import express from 'express';
 import bodyParser from 'body-parser'
@@ -10,6 +8,7 @@ import service from './services/default.service'
 import saveFile from './utils/saveFile.js'
 
 // Airports json
+const isdev = false
 const airportsFileName = isdev ? './assets/airportstest.json' : './assets/airports.json'
 const airports = require(airportsFileName)
 
@@ -32,7 +31,7 @@ app.get('/airports', (req, res) => {
 });
 
 // POST - Add New Airport
-app.post('/airports', (req, res) => {
+app.post("/airports", (req, res) => {
   return service.postAirports(req, res, { airports, saveAirportsData })
 });
 

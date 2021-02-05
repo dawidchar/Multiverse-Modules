@@ -40,11 +40,12 @@ describe('Server.js', () => {
     });
   });
   describe('GET /airport/:icao', () => {
+    import saveFile from './utils/saveFile.js'
     beforeEach(() => {
-      // const saveAirportsData
+      
     });
     it('returns a 200 staus code', () => {
-      
+
     });
   });
 });
