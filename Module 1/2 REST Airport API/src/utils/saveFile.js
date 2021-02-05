@@ -1,11 +1,11 @@
 const fs = require('fs');
 
 // Helper Functions
-function saveAirportsData() {
-    fs.writeFile(airportsFileName, JSON.stringify(airports, null, "\t"), function writeJSON(err) {
+function saveFile(filename, data) {
+    fs.writeFile(filename, JSON.stringify(data, null, "\t"), function writeJSON(err) {
       if (err) return console.log(err);
-      console.log('writing to ' + airportsFileName);
+      console.log('writing to ' + filename);
     });
   }
 
-export default saveAirportsData
+export default saveFile

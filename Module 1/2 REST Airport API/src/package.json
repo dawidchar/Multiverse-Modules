@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-    "start": "nodemon --exec babel-node index.js",
+    "start": "nodemon -e js --exec babel-node index.js",
     "test": "jest"
   },
   "author": "",
