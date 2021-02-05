@@ -60,7 +60,7 @@ app.put("/airport/:icao", (req, res) => {
     airports[airportIndex] = req.body
     saveAirportsData()
   } else {
-    return res.status(404).send('Airport Not found');
+    return res.status(204).send('Airport Not found');
   }
 
   res.send(`Replaced Airport Data ${originalAirportICAO} --> ${airports[airportIndex].icao}`);
@@ -76,7 +76,7 @@ app.patch("/airport/:icao", (req, res) => {
     console.log(`Updated To ${JSON.stringify(airports[airportIndex], null, '\t')}`)
     saveAirportsData()
   } else {
-    return res.status(404).send('Airport Not found');
+    return res.status(204).send('Airport Not found');
   }
 
   res.send(`Updated Airport Data`);
@@ -90,7 +90,7 @@ app.delete("/airport/:icao", (req, res) => {
     airports.splice(airportIndex, 1);
     saveAirportsData()
   } else {
-    return res.status(404).send('Airport Not found');
+    return res.status(204).send('Airport Not found');
   }
 
   res.send('Deleted Airport')
