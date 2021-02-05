@@ -1,3 +1,5 @@
+const isdev = false
+
 // Express
 import express from 'express';
 import bodyParser from 'body-parser'
@@ -5,16 +7,16 @@ const app = express();
 
 // Utils and services
 import service from './services/default.service'
-import saveFile from './utils/saveFile.js'
+import fileUtils from './utils/fileUtils'
+const { getFile, saveFile } = fileUtils
 
 // Airports json
-const isdev = false
-const airportsFileName = isdev ? './assets/airportstest.json' : './assets/airports.json'
-const airports = require(airportsFileName)
+const airportsFileName = isdev ? 'assets/airportstest.json' : 'assets/airports.json'
+const airports = getFile(airportsFileName)
 
 // Swagger components
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./assets/docs/APIdocs.json')
+import swaggerUi from 'swagger-ui-express'
+const swaggerDocument = getFile('assets/docs/APIdocs.json')
 
 // Setup Middleware
 app.use(bodyParser.json());
@@ -55,5 +57,4 @@ app.delete('/airport/:icao', (req, res) => {
   return service.deleteAirport(req, res, { airports, saveAirportsData })
 });
 
-
-module.exports = app;
+export default app
