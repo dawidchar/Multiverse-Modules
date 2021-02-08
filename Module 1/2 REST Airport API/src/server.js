@@ -5,8 +5,11 @@ import express from 'express';
 import bodyParser from 'body-parser'
 const app = express();
 
+// Database
+import mongoose from "mongoose"
+
 // Utils and services
-import service from './services/default.service'
+import service from './controllers/default.controller'
 import fileUtils from './utils/fileUtils'
 const { getFile, saveFile } = fileUtils
 
@@ -26,6 +29,21 @@ const saveAirportsData = () => saveFile(airportsFileName, airports)
 
 
 // Main App
+
+// Users
+
+mongoose.connect(
+  "mongodb://localhost/your-db-here",
+  {
+    useNewUrlParser: true,
+  },
+  () => {
+    console.log("Connected to MongoDB");
+  }
+);
+
+
+//Airports
 
 // GET - All Airports
 app.get('/airports', (req, res) => {
