@@ -10,6 +10,11 @@ import getUser from './REST/Users/getUser.controller'
 import postUsers from './REST/Users/postUsers.controller'
 import patchUser from './REST/Users/patchUser.controller'
 
+import getCounter from './Security/CounterSecurity/getCounter.controller'
+import counterLogin from './Security/CounterSecurity/counterLogin.controller'
+import counterLogout from './Security/CounterSecurity/counterLogout.controller'
+import counterMiddleware from './Security/CounterSecurity/counterMiddleware.controller'
+
 import basicAuth from './Security/basicAuth.controller'
 
 
@@ -29,14 +34,28 @@ const usersREST = {
     patchUser
 }
 
+const counterSecurity = {
+    getCounter,
+    counterLogin,
+    counterLogout,
+    counterMiddleware
+}
+
+
+
+// ------------------- //
+
 const REST = {
     ...airportsREST,
     ...usersREST
 }
 
 const Security = {
-    basicAuth
+    basicAuth,
+    counterSecurity
 }
+
+// ------------------- //
 
 const exports = {
     REST,

@@ -4,8 +4,16 @@ const isdev = false
 import express from 'express';
 import bodyParser from 'body-parser'
 import basicAuth from 'express-basic-auth'
+import session from 'express-session'
 import swaggerUi from 'swagger-ui-express'
 const app = express();
+
+// Express Sessions
+const sessionSettings = {
+  secret: "best cohort ever",
+  resave: false,
+  saveUninitialized: true
+}
 
 // Database
 import mongoose from "mongoose"
@@ -18,16 +26,20 @@ const { getFile, saveFile } = fileUtils
 // Airports json
 const airportsFileName = isdev ? 'assets/airportstest.json' : 'assets/airports.json'
 const airports = getFile(airportsFileName)
+const saveAirportsData = () => saveFile(airportsFileName, airports)
 
 // Swagger components
 const swaggerDocument = getFile('assets/docs/APIdocs.json')
 
 // Setup Middleware
 app.use(bodyParser.json());
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
-// app.use(basicAuth({ challenge:true, authorizer: Controller.Security.basicAuth, authorizeAsync: true }))
+app.use(session(sessionSettings))
 
-const saveAirportsData = () => saveFile(airportsFileName, airports)
+app.use('/login', basicAuth({ challenge: true, authorizer: Controller.Security.basicAuth, authorizeAsync: true }))
+app.use(Controller.Security.counterSecurity.counterMiddleware)
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
+
 
 // User Database
 mongoose.connect(
@@ -41,6 +53,18 @@ mongoose.connect(
 );
 
 // Main App
+
+app.get('/', (req, res) => res.redirect('/docs'));
+
+// Login and Logout 
+
+app.get('/login', Controller.Security.counterSecurity.counterLogin)
+
+app.get('/logout', Controller.Security.counterSecurity.counterLogout)
+
+// Counter
+
+app.get('/counter', Controller.Security.counterSecurity.getCounter)
 
 // Users
 
