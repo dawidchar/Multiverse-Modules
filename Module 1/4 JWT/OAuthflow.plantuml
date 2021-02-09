@@ -25,6 +25,8 @@ ActorFontName Aapex
 
 }
 
+title Client Credentials Flow\n
+
 !define ICONURL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v2.2.0
 
 !includeurl ICONURL/font-awesome/lock.puml
@@ -32,8 +34,6 @@ ActorFontName Aapex
 !includeurl ICONURL/font-awesome/database.puml
 
 
-
-' DEV_MYSQL(App)
 Participant "App\n<$chrome>" as App  
 Participant "Identity Provider\n<$lock>" as IdP
 Participant "Resource\n<$database>" as Resource
