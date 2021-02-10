@@ -3,9 +3,9 @@ const isdev = false
 // Express
 import express from 'express';
 import bodyParser from 'body-parser'
-import basicAuth from 'express-basic-auth'
 import session from 'express-session'
 import swaggerUi from 'swagger-ui-express'
+import cors from 'cors'
 const app = express();
 
 // Express Sessions
@@ -32,11 +32,11 @@ const saveAirportsData = () => saveFile(airportsFileName, airports)
 const swaggerDocument = getFile('assets/docs/APIdocs.json')
 
 // Setup Middleware
+app.use(cors());
 app.use(bodyParser.json());
 app.use(session(sessionSettings))
 
-app.use('/login', basicAuth({ challenge: true, authorizer: Controller.Security.basicAuth, authorizeAsync: true }))
-app.use(Controller.Security.counterSecurity.counterMiddleware)
+app.use(Controller.Security.default.middleware)
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
 
@@ -58,9 +58,9 @@ app.get('/', (req, res) => res.redirect('/docs'));
 
 // Login and Logout 
 
-app.get('/login', Controller.Security.counterSecurity.counterLogin)
+app.get('/login', Controller.Security.default.loginMiddleware, Controller.Security.default.login)
 
-app.get('/logout', Controller.Security.counterSecurity.counterLogout)
+app.get('/logout', Controller.Security.default.logout)
 
 // Counter
 

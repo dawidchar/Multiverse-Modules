@@ -13,10 +13,15 @@ import patchUser from './REST/Users/patchUser.controller'
 import getCounter from './Security/CounterSecurity/getCounter.controller'
 import counterLogin from './Security/CounterSecurity/counterLogin.controller'
 import counterLogout from './Security/CounterSecurity/counterLogout.controller'
-import counterMiddleware from './Security/CounterSecurity/counterMiddleware.controller'
+import counterMiddleware from './Security/CounterSecurity/counter.middleware'
 
-import basicAuth from './Security/basicAuth.controller'
+import basicAuthAuthoriser from './Security/BasicAuth/basicAuth.authoriser'
+import basicAuthMiddleware from './Security/BasicAuth/basicAuth.middleware'
 
+import oAuthMiddleware from './Security/oAuth/oAuth.middleware'
+
+
+// --------- REST ---------- //
 
 const airportsREST = {
     getAirports,
@@ -34,6 +39,8 @@ const usersREST = {
     patchUser
 }
 
+// --------- SECURITY ---------- //
+
 const counterSecurity = {
     getCounter,
     counterLogin,
@@ -41,9 +48,23 @@ const counterSecurity = {
     counterMiddleware
 }
 
+const basicAuth = {
+    basicAuthAuthoriser,
+    basicAuthMiddleware
+}
 
+const oAuth = {
+    oAuthMiddleware
+}
 
-// ------------------- //
+const defaultSecurity = {
+    middleware: oAuthMiddleware,
+    loginMiddleware: basicAuthMiddleware,
+    login: counterLogin,
+    logout: counterLogout
+}
+
+// --------- ROOT Properties ---------- //
 
 const REST = {
     ...airportsREST,
@@ -51,11 +72,13 @@ const REST = {
 }
 
 const Security = {
+    default: defaultSecurity,
+    oAuth,
     basicAuth,
     counterSecurity
 }
 
-// ------------------- //
+// --------- EXPORT ---------- //
 
 const exports = {
     REST,

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import getUserFromDB from '../../utils/getUserFromDB.service'
+import getUserFromDB from '../../../utils/getUserFromDB.service'
 
 async function Authorizer(username, password, cb) {
     const user = await getUserFromDB(username, { showPassword: true })
