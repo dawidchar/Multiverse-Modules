@@ -1,3 +1,5 @@
+import excludeLoginFromMiddleware from './Security/excludeLoginFromMiddleware.service'
+
 import getAirports from './REST/Airports/getAirports.controller'
 import getAirport from './REST/Airports/getAirport.controller'
 import postAirports from './REST/Airports/postAirports.controller'
@@ -19,6 +21,8 @@ import basicAuthAuthoriser from './Security/BasicAuth/basicAuth.authoriser'
 import basicAuthMiddleware from './Security/BasicAuth/basicAuth.middleware'
 
 import oAuthMiddleware from './Security/oAuth/oAuth.middleware'
+
+const emptyMiddleware = (req,res,next) => next()
 
 
 // --------- REST ---------- //
@@ -58,7 +62,7 @@ const oAuth = {
 }
 
 const defaultSecurity = {
-    middleware: oAuthMiddleware,
+    middleware: excludeLoginFromMiddleware(oAuthMiddleware),
     loginMiddleware: basicAuthMiddleware,
     login: counterLogin,
     logout: counterLogout
